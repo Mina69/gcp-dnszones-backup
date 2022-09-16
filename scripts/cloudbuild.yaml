@@ -1,0 +1,15 @@
+steps:
+- name: 'bash'
+  args: ['echo', 'Backing up DNS zone to Storage!']
+- name: 'bash'
+  args: ['chmod', '+x', 'scripts/dnszone_backup.bash']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: "bash"
+  args:
+    - "-c"
+    - |
+      echo "Calling the backup script."
+      scripts/dnszone_backup.bash "${_PROJECT_NAMES}" "${_BUCKET_URL}"
+logsBucket: 'gs://demo-gcs-$PROJECT_ID-cloudbuildlogs-dnszones-backup'
+options:
+  logging: GCS_ONLY      

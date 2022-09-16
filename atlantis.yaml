@@ -1,0 +1,25 @@
+version: 3
+projects:
+- name: gcp-sbx
+  dir: gcp/terraform/sandbox
+  workflow: gcp-sbx
+  autoplan:
+    when_modified: ["**/*.tf", "terraform/environments/sbx.tfvars"]
+- name: gcp-prd
+  dir: gcp/terraform/prd
+  workflow: gcp-prd
+  autoplan:
+    when_modified: ["**/*.tf", "terraform/environments/prd.tfvars"]    
+workflows:
+  gcp-sbx:
+    plan:
+      steps:
+      - init
+      - plan:
+          extra_args: ["-var-file", "terraform/environments/sbx.tfvars"]
+  gcp-prd:
+    plan:
+      steps:
+      - init
+      - plan:
+          extra_args: ["-var-file", "terraform/environments/prd.tfvars"]
